@@ -1,0 +1,11 @@
+Package: efsacatalogclient
+Type: Package
+Title: This Package Provides Functions To Download EFSA Catalogs 
+Version: 0.1.0
+Author: Kenneth Mulligan
+Maintainer:  Kenneth Mulligan <kenneth.mulligan@efsa.europa.eu>
+Description: This peckage provides a client to access the entire collection of 
+              EFSA control terminology in json format.
+License: GNU-3
+Encoding: UTF-8
+LazyData: true
