@@ -1,6 +1,19 @@
-source(paste0(getwd(),"/helpers/catalog_client_global.R"))
+#source(paste0(getwd(),"/helpers/catalog_client_global.R"))
 
-ua <- user_agent("r4EU API Client")
+#source("/catalog_client_global.R")
+
+
+# library(data.table)
+# library(mongolite)
+# library(httr)
+# library(jsonlite)
+# library(tidyverse)
+# library(stringr)
+# library(assertive) 
+
+r4EUAPI_urlbase<- "http://127.0.0.1"
+ocp_ppim_subscription_key <- "842d2a2c001148ce859ba21425aa93dc"
+ua <- httr::user_agent("r4EU API Client")
 
 
 
@@ -12,7 +25,7 @@ post_r4eu_api <- function(path,bodytagValue=NULL,artifact,artifact_loc) {
   
   supported_Mimes <- c("application/json" , "multipart/related","application/octet-stream","text/plain")
   
-  url <- modify_url(r4EUAPI_urlbase, path = path)
+  url <- httr::modify_url(r4EUAPI_urlbase, path = path)
   
   if ( !is.null(bodytagValue) ) { 
     bodyIs = bodytagValue 
@@ -23,12 +36,12 @@ post_r4eu_api <- function(path,bodytagValue=NULL,artifact,artifact_loc) {
   
   #,"Ocp-Apim-Subscription-Key"= ocp_ppim_subscription_key
 
-  resp <-GET(url,
-              #add_headers("Content-Type" = "application/json"),
-              query = bodyIs ,
-             #encode = "json",
-             verbose()
-  )
+  resp <-httr::GET(url,
+                #add_headers("Content-Type" = "application/json"),
+               query = bodyIs ,
+                #encode = "json",
+               httr::verbose()
+               )
   
   parsed_fp <- content(resp, "text")
   print("Returned type is")
@@ -85,9 +98,23 @@ wrap_api_queryList<- function ( action, vars, values ) {
 
 
  
-get_Catalogs <- function(cat_name){
+#' @title get_catalogs
+#'
+#' @description This function will return \code{\link{data.table}} containing the catalog or list of catalogs
+#'              supplied
+#'
+#' @param x a comma separated list of catalogs you want downloaded
+#'
+#' @return list of
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' get_Catalogs("COUNTRY.EUSRrepCountry")
+#' }
+get_Catalogs <- function(x){
   vars <-   c("catalogs")
-  values <- c(cat_name)
+  values <- c(x)
   querylist <- wrap_api_queryList ("getCatalogs",vars,values)
   call_artifact <-"model_catalogs"
   
@@ -115,6 +142,6 @@ get_Catalogs <- function(cat_name){
   return(dwn_load)  
 }  
 
-get_Catalogs("COUNTRY.EUSRrepCountry")
+#getCatalogs("COUNTRY.EUSRrepCountry")
 
-get_Catalogs("COUNTRY.EUSRrepCountry,LANG.LANG,PARAM.serovarsamr,ZOO_CAT_MATRIX.ZOO_CAT_MATRIX,UNIT.amrsmpUn,SAMPNT.zooss,COUNTRY.COUNTRY,ZOO_CAT_SMPTYP.ZOO_CAT_SMPTYP,PRGTYP.zooSampContext,SAMPLR.SAMPLR,AMRPROG.AMRPROG,SAMPSTR.SAMPSTR,NUTS.nuts2013,ANLYMD.amram,PARAM.AMRSub,ZOO_CAT_FIXMEAS.number,ZOO_CAT_FIXMEAS.mic,ZOO_CAT_FIXMEAS.izd,PARAM.esbl,PARAM.ampc,PARAM.carba,POSNEG.POSNEG,YESNO.zoo")
+#getCatalogs("COUNTRY.EUSRrepCountry,LANG.LANG,PARAM.serovarsamr,ZOO_CAT_MATRIX.ZOO_CAT_MATRIX,UNIT.amrsmpUn,SAMPNT.zooss,COUNTRY.COUNTRY,ZOO_CAT_SMPTYP.ZOO_CAT_SMPTYP,PRGTYP.zooSampContext,SAMPLR.SAMPLR,AMRPROG.AMRPROG,SAMPSTR.SAMPSTR,NUTS.nuts2013,ANLYMD.amram,PARAM.AMRSub,ZOO_CAT_FIXMEAS.number,ZOO_CAT_FIXMEAS.mic,ZOO_CAT_FIXMEAS.izd,PARAM.esbl,PARAM.ampc,PARAM.carba,POSNEG.POSNEG,YESNO.zoo")
