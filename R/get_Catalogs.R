@@ -106,7 +106,7 @@ wrap_api_queryList<- function ( action, vars, values ) {
 #' @param x a comma separated list of catalogs you want downloaded
 #'
 #' @return list of
-#' @export
+#' @exportuse
 #'
 #' @examples
 #' \dontrun{
@@ -115,7 +115,7 @@ wrap_api_queryList<- function ( action, vars, values ) {
 get_Catalogs <- function(x){
   vars <-   c("catalogs")
   values <- c(x)
-  querylist <- wrap_api_queryList ("getCatalogs",vars,values)
+  querylist <- wrap_api_queryList ("get_Catalogs",vars,values)
   call_artifact <-"model_catalogs"
   
   print(paste("API request body is",querylist))
